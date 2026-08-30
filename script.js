@@ -1,6 +1,5 @@
-function calculateItemAmount(price, quantity) {
-  return price * quantity;
-}
+
+const calculateItemAmount = (price, quantity) => price * quantity;
 
 function calculateDiscount(subtotal) {
   if (subtotal >= 5000) {
@@ -27,25 +26,37 @@ function getDeliveryFee(option) {
   }
 }
 
-function getDiscountRateLabel(subtotal) {
+
+const getDiscountRateLabel = (subtotal) => {
   if (subtotal >= 5000) return 10;
   if (subtotal >= 3000) return 7;
   if (subtotal >= 1000) return 5;
   return 0;
-}
+};
 
-function formatCurrency(amount) {
-  return amount.toLocaleString("en-US", {
+
+const formatCurrency = (amount) =>
+  amount.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   });
-}
+
+const DELIVERY_TYPE_NAMES = {
+  1: "Store Pickup",
+  2: "Standard Delivery",
+  3: "Express Delivery"
+};
+
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = { calculateItemAmount, calculateDiscount, getDeliveryFee };
 }
 
+// Everything below this line touches the DOM, so it only runs inside an
+// actual browser/page — it's skipped automatically if this file is
+// loaded in a plain Node environment with no `document`.
 if (typeof document !== "undefined") {
+
 
 const customerNameInput = document.getElementById("customerName");
 const productCountInput = document.getElementById("productCount");
@@ -55,9 +66,8 @@ const validationMessage = document.getElementById("validationMessage");
 const calculateBtn = document.getElementById("calculateBtn");
 const orderSummary = document.getElementById("orderSummary");
 
-productCountInput.addEventListener("input", generateProductFields);
 
-function generateProductFields() {
+const generateProductFields = () => {
   productsContainer.innerHTML = "";
   const count = parseInt(productCountInput.value);
 
@@ -79,15 +89,42 @@ function generateProductFields() {
     `;
     productsContainer.appendChild(row);
   }
-}
+};
 
-calculateBtn.addEventListener("click", function () {
+productCountInput.addEventListener("input", generateProductFields);
+
+const readProductRow = (index) => {
+  const nameInput = document.getElementById(`productName-${index}`);
+  const priceInput = document.getElementById(`productPrice-${index}`);
+  const quantityInput = document.getElementById(`productQuantity-${index}`);
+
+  const name = nameInput ? nameInput.value.trim() : "";
+  const price = parseFloat(priceInput ? priceInput.value : NaN);
+  const quantity = parseFloat(quantityInput ? quantityInput.value : NaN);
+
+  const isValid = name !== "" && !isNaN(price) && price > 0 && !isNaN(quantity) && quantity > 0;
+  if (!isValid) return null;
+
+  return { name, price, quantity, amount: calculateItemAmount(price, quantity) };
+};
+
+const renderProductLine = ({ name, price, quantity, amount }, index) => `
+  <p>
+    ${index + 1}. ${name}<br>
+    Price: ₱${formatCurrency(price)}<br>
+    Quantity: ${quantity}<br>
+    Amount: ₱${formatCurrency(amount)}
+  </p>
+`;
+
+calculateBtn.addEventListener("click", () => {
   validationMessage.textContent = "";
   orderSummary.innerHTML = "";
 
   const customerName = customerNameInput.value.trim();
   const productCount = parseInt(productCountInput.value);
 
+  
   if (!isNaN(productCount) && productCount > 0 &&
       productsContainer.children.length !== productCount) {
     generateProductFields();
@@ -103,50 +140,29 @@ calculateBtn.addEventListener("click", function () {
     return;
   }
 
-  let subtotal = 0;
-  let productDetailsHTML = "";
-
+  
+  const products = [];
   for (let i = 0; i < productCount; i++) {
-    const nameInput = document.getElementById(`productName-${i}`);
-    const priceInput = document.getElementById(`productPrice-${i}`);
-    const quantityInput = document.getElementById(`productQuantity-${i}`);
-
-    const name = nameInput ? nameInput.value.trim() : "";
-    const price = parseFloat(priceInput ? priceInput.value : NaN);
-    const quantity = parseFloat(quantityInput ? quantityInput.value : NaN);
-
-    const validPrice = !isNaN(price) && price > 0;
-    const validQuantity = !isNaN(quantity) && quantity > 0;
-
-    if (name === "" || !validPrice || !validQuantity) {
+    const product = readProductRow(i);
+    if (product === null) {
       validationMessage.textContent = `Please enter valid values for Product ${i + 1}.`;
       return;
     }
-
-    const amount = calculateItemAmount(price, quantity);
-    subtotal += amount;
-
-    productDetailsHTML += `
-      <p>
-        ${i + 1}. ${name}<br>
-        Price: ₱${formatCurrency(price)}<br>
-        Quantity: ${quantity}<br>
-        Amount: ₱${formatCurrency(amount)}
-      </p>
-    `;
+    products.push(product);
   }
+
+ 
+  const subtotal = products.reduce((accumulator, product) => accumulator + product.amount, 0);
+
+
+  const productDetailsHTML = products
+    .map((product, index) => renderProductLine(product, index))
+    .join("");
 
   const discountAmount = calculateDiscount(subtotal);
   const discountRate = getDiscountRateLabel(subtotal);
   const deliveryFee = getDeliveryFee(deliveryOptionSelect.value);
-
-  const deliveryTypeNames = {
-    1: "Store Pickup",
-    2: "Standard Delivery",
-    3: "Express Delivery"
-  };
-  const deliveryType = deliveryTypeNames[Number(deliveryOptionSelect.value)];
-
+  const deliveryType = DELIVERY_TYPE_NAMES[Number(deliveryOptionSelect.value)];
   const finalAmount = subtotal - discountAmount + deliveryFee;
 
   orderSummary.innerHTML = `
