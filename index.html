@@ -3,7 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Mini Store Checkout System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #ffeef5;
+            color: #444;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #d85b86;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #999;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #b84f75;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #f0b6c9;
+            border-radius: 8px;
+            font-size: 15px;
+            background: #fffafb;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #d85b86;
+        }
+
+        #productsContainer {
+            margin-top: 20px;
+        }
+
+        .product-box {
+            background: #fff6f9;
+            border: 1px solid #f3c5d5;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+
+        .product-title {
+            color: #d85b86;
+            margin-bottom: 12px;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #d85b86;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .calculate-btn:hover {
+            background: #c54873;
+        }
+
+        #validationMessage {
+            margin-top: 15px;
+            color: #d14368;
+            font-weight: bold;
+        }
+
+        #orderSummary {
+            margin-top: 25px;
+            padding: 18px;
+            background: #fff6f9;
+            border: 1px solid #f3c5d5;
+            border-radius: 10px;
+        }
+
+        #orderSummary h2 {
+            color: #d85b86;
+            margin-bottom: 15px;
+        }
+
+        .summary-product {
+            background: white;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+
+        .final-amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d85b86;
+            border-top: 1px solid #f0b6c9;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
