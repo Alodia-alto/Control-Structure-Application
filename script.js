@@ -1,3 +1,5 @@
+// MINI STORE CHECKOUT SYSTEM
+
 
 function calculateItemAmount(price, quantity) {
     return price * quantity;
@@ -6,44 +8,37 @@ function calculateItemAmount(price, quantity) {
 
 function calculateDiscount(subtotal) {
 
-    let discountRate = 0;
-
     if (subtotal >= 5000) {
-        discountRate = 0.10;
-    } else if (subtotal >= 3000) {
-        discountRate = 0.07;
-    } else if (subtotal >= 1000) {
-        discountRate = 0.05;
-    } else {
-        discountRate = 0;
-    }
+        return subtotal * 0.10;
 
-    return subtotal * discountRate;
+    } else if (subtotal >= 3000) {
+        return subtotal * 0.07;
+
+    } else if (subtotal >= 1000) {
+        return subtotal * 0.05;
+
+    } else {
+        return 0;
+    }
 }
 
-function getDeliveryFee(option) {
 
-    let deliveryFee = 0;
+function getDeliveryFee(option) {
 
     switch (option) {
 
         case "1":
-            deliveryFee = 0;
-            break;
+            return 0;
 
         case "2":
-            deliveryFee = 80;
-            break;
+            return 80;
 
         case "3":
-            deliveryFee = 150;
-            break;
+            return 150;
 
         default:
-            deliveryFee = 0;
+            return 0;
     }
-
-    return deliveryFee;
 }
 
 
@@ -56,80 +51,84 @@ const validationMessage = document.getElementById("validationMessage");
 const orderSummary = document.getElementById("orderSummary");
 
 
-
 productCount.addEventListener("input", function () {
 
     const count = Number(productCount.value);
 
     productsContainer.innerHTML = "";
 
-    if (count > 0) {
+    if (count > 0 && Number.isInteger(count)) {
 
         for (let i = 0; i < count; i++) {
 
-            const productBox = document.createElement("div");
+            productsContainer.innerHTML += `
+                <div class="product-box">
 
-            productBox.className = "product-box";
+                    <h3 class="product-title">
+                        Product ${i + 1}
+                    </h3>
 
-            productBox.innerHTML = `
-                <h3 class="product-title">Product ${i + 1}</h3>
+                    <div class="form-group">
 
-                <div class="form-group">
-                    <label for="productName-${i}">
-                        Product Name
-                    </label>
+                        <label for="productName-${i}">
+                            Product Name
+                        </label>
 
-                    <input
-                        type="text"
-                        id="productName-${i}"
-                        placeholder="Enter product name"
-                    >
-                </div>
+                        <input
+                            type="text"
+                            id="productName-${i}"
+                            placeholder="Enter product name"
+                        >
 
-                <div class="form-group">
-                    <label for="productPrice-${i}">
-                        Price
-                    </label>
+                    </div>
 
-                    <input
-                        type="number"
-                        id="productPrice-${i}"
-                        min="0"
-                        step="0.01"
-                        placeholder="Enter price"
-                    >
-                </div>
+                    <div class="form-group">
 
-                <div class="form-group">
-                    <label for="productQuantity-${i}">
-                        Quantity
-                    </label>
+                        <label for="productPrice-${i}">
+                            Price
+                        </label>
 
-                    <input
-                        type="number"
-                        id="productQuantity-${i}"
-                        min="1"
-                        placeholder="Enter quantity"
-                    >
+                        <input
+                            type="number"
+                            id="productPrice-${i}"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter price"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="productQuantity-${i}">
+                            Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productQuantity-${i}"
+                            min="1"
+                            step="1"
+                            placeholder="Enter quantity"
+                        >
+
+                    </div>
+
                 </div>
             `;
-
-            productsContainer.appendChild(productBox);
         }
     }
 });
 
 
-
 calculateBtn.addEventListener("click", function () {
 
-    // Clear previous messages
     validationMessage.textContent = "";
     orderSummary.innerHTML = "";
 
 
-
     const name = customerName.value.trim();
+
 
     if (name === "") {
 
@@ -143,6 +142,7 @@ calculateBtn.addEventListener("click", function () {
 
 
     const count = Number(productCount.value);
+
 
     if (
         productCount.value === "" ||
@@ -163,22 +163,20 @@ calculateBtn.addEventListener("click", function () {
 
     let productDetails = "";
 
-    let hasError = false;
-
 
     for (let i = 0; i < count; i++) {
 
         const productNameInput =
-            document.getElementById(`productName-${i}`);
+            document.getElementById("productName-" + i);
 
         const productPriceInput =
-            document.getElementById(`productPrice-${i}`);
+            document.getElementById("productPrice-" + i);
 
         const productQuantityInput =
-            document.getElementById(`productQuantity-${i}`);
+            document.getElementById("productQuantity-" + i);
 
 
-        // Get values
+        // Get product information
         const productName =
             productNameInput.value.trim();
 
@@ -192,16 +190,16 @@ calculateBtn.addEventListener("click", function () {
         if (productName === "") {
 
             validationMessage.textContent =
-                `Please enter the Product Name for Product ${i + 1}.`;
+                "Please enter the Product Name for Product " +
+                (i + 1) + ".";
 
             productNameInput.focus();
 
-            hasError = true;
-
-            break;
+            return;
         }
 
 
+        // Validate price
         if (
             productPriceInput.value === "" ||
             !Number.isFinite(price) ||
@@ -209,30 +207,29 @@ calculateBtn.addEventListener("click", function () {
         ) {
 
             validationMessage.textContent =
-                `Please enter a valid positive Price for Product ${i + 1}.`;
+                "Please enter a valid positive Price for Product " +
+                (i + 1) + ".";
 
             productPriceInput.focus();
 
-            hasError = true;
-
-            break;
+            return;
         }
 
+
+        // Validate quantity
         if (
             productQuantityInput.value === "" ||
-            !Number.isFinite(quantity) ||
-            quantity <= 0 ||
-            !Number.isInteger(quantity)
+            !Number.isInteger(quantity) ||
+            quantity <= 0
         ) {
 
             validationMessage.textContent =
-                `Please enter a valid positive Quantity for Product ${i + 1}.`;
+                "Please enter a valid positive Quantity for Product " +
+                (i + 1) + ".";
 
             productQuantityInput.focus();
 
-            hasError = true;
-
-            break;
+            return;
         }
 
 
@@ -240,13 +237,15 @@ calculateBtn.addEventListener("click", function () {
             calculateItemAmount(price, quantity);
 
 
-        
         subtotal += itemAmount;
+
 
         productDetails += `
             <div class="summary-product">
 
-                <strong>${i + 1}. ${productName}</strong>
+                <strong>
+                    ${i + 1}. ${productName}
+                </strong>
 
                 <div>
                     Price: ₱${price.toFixed(2)}
@@ -265,11 +264,6 @@ calculateBtn.addEventListener("click", function () {
     }
 
 
-    if (hasError) {
-        return;
-    }
-
-
     const discount =
         calculateDiscount(subtotal);
 
@@ -277,27 +271,33 @@ calculateBtn.addEventListener("click", function () {
     let discountRate = 0;
 
     if (subtotal >= 5000) {
+
         discountRate = 10;
+
     } else if (subtotal >= 3000) {
+
         discountRate = 7;
+
     } else if (subtotal >= 1000) {
+
         discountRate = 5;
+
     } else {
+
         discountRate = 0;
     }
 
 
-    const selectedOption =
-        deliveryOption.value;
+    const option = deliveryOption.value;
+
 
     const deliveryFee =
-        getDeliveryFee(selectedOption);
+        getDeliveryFee(option);
 
 
-    
     let deliveryType = "";
 
-    switch (selectedOption) {
+    switch (option) {
 
         case "1":
             deliveryType = "Store Pickup";
@@ -316,10 +316,8 @@ calculateBtn.addEventListener("click", function () {
     }
 
 
-
     const finalAmount =
         subtotal - discount + deliveryFee;
-
 
 
     orderSummary.innerHTML = `
