@@ -34,6 +34,13 @@ function getDiscountRateLabel(subtotal) {
   return 0;
 }
 
+function formatCurrency(amount) {
+  return amount.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
 if (typeof module !== "undefined" && module.exports) {
   module.exports = { calculateItemAmount, calculateDiscount, getDeliveryFee };
 }
@@ -122,9 +129,9 @@ calculateBtn.addEventListener("click", function () {
     productDetailsHTML += `
       <p>
         ${i + 1}. ${name}<br>
-        Price: ₱${price.toFixed(2)}<br>
+        Price: ₱${formatCurrency(price)}<br>
         Quantity: ${quantity}<br>
-        Amount: ₱${amount.toFixed(2)}
+        Amount: ₱${formatCurrency(amount)}
       </p>
     `;
   }
@@ -146,12 +153,12 @@ calculateBtn.addEventListener("click", function () {
     <h2>ORDER SUMMARY</h2>
     <p>Customer: ${customerName}</p>
     ${productDetailsHTML}
-    <p>Subtotal: ₱${subtotal.toFixed(2)}</p>
+    <p>Subtotal: ₱${formatCurrency(subtotal)}</p>
     <p>Discount Rate: ${discountRate}%</p>
-    <p>Discount Amount: ₱${discountAmount.toFixed(2)}</p>
+    <p>Discount Amount: ₱${formatCurrency(discountAmount)}</p>
     <p>Delivery Type: ${deliveryType}</p>
-    <p>Delivery Fee: ₱${deliveryFee.toFixed(2)}</p>
-    <p>Final Amount: ₱${finalAmount.toFixed(2)}</p>
+    <p>Delivery Fee: ₱${formatCurrency(deliveryFee)}</p>
+    <p>Final Amount: ₱${formatCurrency(finalAmount)}</p>
   `;
 });
 
