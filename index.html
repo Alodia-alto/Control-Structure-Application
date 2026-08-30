@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Mini Store Checkout System</title>
 
     <style>
@@ -13,24 +13,25 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: #ffeef5;
+            background-color: #ffeef5;
             color: #444;
             padding: 30px 15px;
         }
 
         .container {
+            width: 100%;
             max-width: 700px;
             margin: auto;
-            background: white;
+            background-color: white;
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         }
 
         h1 {
             text-align: center;
             color: #d85b86;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .subtitle {
@@ -45,9 +46,9 @@
 
         label {
             display: block;
+            margin-bottom: 6px;
             font-weight: bold;
             color: #b84f75;
-            margin-bottom: 6px;
         }
 
         input,
@@ -57,7 +58,6 @@
             border: 1px solid #f0b6c9;
             border-radius: 8px;
             font-size: 15px;
-            background: #fffafb;
         }
 
         input:focus,
@@ -71,7 +71,7 @@
         }
 
         .product-box {
-            background: #fff6f9;
+            background-color: #fff6f9;
             border: 1px solid #f3c5d5;
             padding: 15px;
             margin-bottom: 15px;
@@ -80,7 +80,7 @@
 
         .product-title {
             color: #d85b86;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .calculate-btn {
@@ -88,7 +88,7 @@
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background: #d85b86;
+            background-color: #d85b86;
             color: white;
             font-size: 16px;
             font-weight: bold;
@@ -96,7 +96,7 @@
         }
 
         .calculate-btn:hover {
-            background: #c54873;
+            background-color: #c54873;
         }
 
         #validationMessage {
@@ -108,7 +108,7 @@
         #orderSummary {
             margin-top: 25px;
             padding: 18px;
-            background: #fff6f9;
+            background-color: #fff6f9;
             border: 1px solid #f3c5d5;
             border-radius: 10px;
         }
@@ -119,7 +119,7 @@
         }
 
         .summary-product {
-            background: white;
+            background-color: white;
             padding: 12px;
             margin-bottom: 10px;
             border-radius: 8px;
@@ -143,58 +143,91 @@
 </head>
 
 <body>
+
     <div class="container">
-        <h1>MINI STORE CHECKOUT</h1>
+
+        <h1>♡ MINI STORE CHECKOUT SYSTEM ♡</h1>
 
         <p class="subtitle">
             Simple JavaScript Checkout
         </p>
 
-        <div class="form-group">
-            <label for="customerName">Customer Name</label>
-            <input
-                type="text"
-                id="customerName"
-                placeholder="Enter your name"
+        <form id="checkoutForm">
+
+            <div class="form-group">
+
+                <label for="customerName">
+                    Customer Name
+                </label>
+
+                <input
+                    type="text"
+                    id="customerName"
+                    placeholder="Enter customer name"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="productCount">
+                    Number of Products
+                </label>
+
+                <input
+                    type="number"
+                    id="productCount"
+                    min="1"
+                    step="1"
+                    placeholder="Enter number of products"
+                >
+
+            </div>
+
+            <div id="productsContainer"></div>
+
+            <div class="form-group">
+
+                <label for="deliveryOption">
+                    Delivery Option
+                </label>
+
+                <select id="deliveryOption">
+
+                    <option value="1">
+                        Store Pickup
+                    </option>
+
+                    <option value="2">
+                        Standard Delivery
+                    </option>
+
+                    <option value="3">
+                        Express Delivery
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div id="validationMessage"></div>
+
+            <button
+                type="button"
+                id="calculateBtn"
+                class="calculate-btn"
             >
-        </div>
+                Calculate Order
+            </button>
 
-        <div class="form-group">
-            <label for="productCount">Number of Products</label>
-            <input
-                type="number"
-                id="productCount"
-                min="1"
-                step="1"
-                placeholder="Enter number of products"
-            >
-        </div>
-
-        <div id="productsContainer"></div>
-
-        <div class="form-group">
-            <label for="deliveryOption">Delivery Option</label>
-
-            <select id="deliveryOption">
-                <option value="1">Store Pickup - ₱0</option>
-                <option value="2">Standard Delivery - ₱80</option>
-                <option value="3">Express Delivery - ₱150</option>
-            </select>
-        </div>
-
-        <div id="validationMessage"></div>
-
-        <button
-            type="button"
-            id="calculateBtn"
-            class="calculate-btn"
-        >
-            Calculate Order
-        </button>
+        </form>
 
         <div id="orderSummary"></div>
+
     </div>
 
     <script src="script.js"></script>
+
 </body>
+
 </html>
