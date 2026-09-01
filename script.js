@@ -1,6 +1,5 @@
 
 const calculateItemAmount = (price, quantity) => price * quantity;
-
 function calculateDiscount(subtotal) {
   if (subtotal >= 5000) {
     return subtotal * 0.10;
@@ -26,14 +25,12 @@ function getDeliveryFee(option) {
   }
 }
 
-
 const getDiscountRateLabel = (subtotal) => {
   if (subtotal >= 5000) return 10;
   if (subtotal >= 3000) return 7;
   if (subtotal >= 1000) return 5;
   return 0;
 };
-
 
 const formatCurrency = (amount) =>
   amount.toLocaleString("en-US", {
@@ -55,7 +52,6 @@ if (typeof module !== "undefined" && module.exports) {
 // actual browser/page — it's skipped automatically if this file is
 // loaded in a plain Node environment with no `document`.
 if (typeof document !== "undefined") {
-
 
 const customerNameInput = document.getElementById("customerName");
 const productCountInput = document.getElementById("productCount");
@@ -116,7 +112,6 @@ const renderProductLine = ({ name, price, quantity, amount }, index) => `
   </p>
 `;
 
-
 calculateBtn.addEventListener("click", () => {
   validationMessage.textContent = "";
   orderSummary.innerHTML = "";
@@ -124,7 +119,6 @@ calculateBtn.addEventListener("click", () => {
   const customerName = customerNameInput.value.trim();
   const productCount = parseInt(productCountInput.value);
 
-  
   if (!isNaN(productCount) && productCount > 0 &&
       productsContainer.children.length !== productCount) {
     generateProductFields();
@@ -140,7 +134,6 @@ calculateBtn.addEventListener("click", () => {
     return;
   }
 
-  
   const products = [];
   for (let i = 0; i < productCount; i++) {
     const product = readProductRow(i);
@@ -151,9 +144,7 @@ calculateBtn.addEventListener("click", () => {
     products.push(product);
   }
 
-
   const subtotal = products.reduce((accumulator, product) => accumulator + product.amount, 0);
-
 
   const productDetailsHTML = products
     .map((product, index) => renderProductLine(product, index))
