@@ -1,244 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Store Checkout System</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+  <title>Mini Store Checkout System</title>
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #ffe6f0;
-            color: #555;
-            padding: 30px 15px;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        .container {
-            max-width: 700px;
-            margin: auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 6px 18px rgba(216, 91, 134, 0.15);
-            border: 2px solid #ffd1df;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffeaf2;
+      color: #555;
+      padding: 30px 15px;
+    }
 
-        h1 {
-            text-align: center;
-            color: #d85b86;
-            margin-bottom: 8px;
-            font-size: 28px;
-        }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border: 2px solid #ffc9db;
+      border-radius: 20px;
+      box-shadow: 0 6px 15px rgba(216, 91, 134, 0.15);
+      position: relative;
+    }
 
-        h1::before {
-            content: "♥ ";
-            color: #f29ab7;
-        }
+    .container::before {
+      content: "♥";
+      position: absolute;
+      top: 12px;
+      left: 18px;
+      color: #f29ab7;
+      font-size: 22px;
+    }
 
-        h1::after {
-            content: " ♥";
-            color: #f29ab7;
-        }
+    .container::after {
+      content: "♥";
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      color: #f29ab7;
+      font-size: 22px;
+    }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+    h1 {
+      text-align: center;
+      color: #d85b86;
+      font-size: 26px;
+      margin-bottom: 30px;
+    }
 
-        label {
-            display: block;
-            font-weight: bold;
-            color: #b84f75;
-            margin-bottom: 7px;
-        }
+    h1::before {
+      content: "♡ ";
+    }
 
-        label::after {
-            content: " ♡";
-            color: #e89ab3;
-        }
+    h1::after {
+      content: " ♡";
+    }
 
-        input,
-        select {
-            width: 100%;
-            padding: 11px;
-            border: 1px solid #f3b8ca;
-            border-radius: 10px;
-            font-size: 15px;
-            background: #fff9fb;
-        }
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-        input::placeholder {
-            color: #c9a5b2;
-        }
+    label {
+      display: block;
+      font-weight: bold;
+      color: #b84f75;
+      margin-bottom: 7px;
+    }
 
-        input:focus,
-        select:focus {
-            outline: none;
-            border-color: #d85b86;
-            box-shadow: 0 0 6px rgba(216, 91, 134, 0.2);
-        }
+    label::after {
+      content: " ♡";
+      color: #e89ab3;
+    }
 
-        #productsContainer {
-            margin-top: 20px;
-        }
+    input,
+    select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #f3b8ca;
+      border-radius: 10px;
+      font-size: 15px;
+      background: #fff8fb;
+    }
 
-        .product-box {
-            background: #fff5f8;
-            border: 1px solid #f4c4d3;
-            padding: 18px;
-            margin-bottom: 15px;
-            border-radius: 14px;
-        }
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #d85b86;
+      box-shadow: 0 0 5px rgba(216, 91, 134, 0.2);
+    }
 
-        .product-title {
-            color: #d85b86;
-            margin-bottom: 12px;
-        }
+    #productsContainer {
+      margin: 20px 0;
+    }
 
-        .calculate-btn {
-            width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: 12px;
-            background: #d85b86;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(216, 91, 134, 0.2);
-        }
+    .product-box {
+      background: #fff4f8;
+      border: 1px solid #f4c4d3;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+    }
 
-        .calculate-btn::before {
-            content: "♡ ";
-        }
+    .product-title {
+      color: #d85b86;
+    }
 
-        .calculate-btn::after {
-            content: " ♡";
-        }
+    #validationMessage {
+      margin: 15px 0;
+      color: #d14368;
+      font-weight: bold;
+    }
 
-        .calculate-btn:hover {
-            background: #c54873;
-        }
+    #calculateBtn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      background: #d85b86;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(216, 91, 134, 0.2);
+    }
 
-        #validationMessage {
-            margin-top: 15px;
-            margin-bottom: 15px;
-            color: #d14368;
-            font-weight: bold;
-            background: #fff0f4;
-            padding: 10px;
-            border-radius: 8px;
-        }
+    #calculateBtn::before {
+      content: "♡ ";
+    }
 
-        #orderSummary {
-            margin-top: 25px;
-            padding: 20px;
-            background: #fff5f8;
-            border: 1px solid #f3c5d5;
-            border-radius: 14px;
-        }
+    #calculateBtn::after {
+      content: " ♡";
+    }
 
-        #orderSummary h2 {
-            color: #d85b86;
-            margin-bottom: 15px;
-            text-align: center;
-        }
+    #calculateBtn:hover {
+      background: #c54873;
+    }
 
-        #orderSummary h2::before {
-            content: "♥ ";
-        }
+    #orderSummary {
+      margin-top: 25px;
+      padding: 20px;
+      background: #fff4f8;
+      border: 1px solid #f3c5d5;
+      border-radius: 12px;
+    }
 
-        #orderSummary h2::after {
-            content: " ♥";
-        }
+    #orderSummary h2 {
+      text-align: center;
+      color: #d85b86;
+    }
 
-        .summary-product {
-            background: white;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            border: 1px solid #f7d4df;
-        }
+    .summary-product {
+      background: white;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #f7d4df;
+      border-radius: 10px;
+    }
 
-        .summary-line {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-        }
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+    }
 
-        .final-amount {
-            font-size: 20px;
-            font-weight: bold;
-            color: #d85b86;
-            border-top: 1px solid #f0b6c9;
-            margin-top: 10px;
-            padding-top: 10px;
-        }
-
-        #orderSummary p:last-child {
-            background: #ffe6ef;
-            padding: 12px;
-            border-radius: 10px;
-            text-align: center;
-        }
-    </style>
+    .final-amount {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f0b6c9;
+      color: #d85b86;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
 
-    <div class="container">
+  <div class="container">
 
-        <h1>MINI STORE CHECKOUT SYSTEM</h1>
+    <h1>MINI STORE CHECKOUT SYSTEM</h1>
 
-        <div class="form-group">
-            <label for="customerName">Customer Name</label>
-            <input
-                type="text"
-                id="customerName"
-                placeholder="Enter your name"
-            >
-        </div>
-
-        <div class="form-group">
-            <label for="productCount">Number of Products</label>
-            <input
-                type="number"
-                id="productCount"
-                min="1"
-                placeholder="Enter number of products"
-            >
-        </div>
-
-        <div id="productsContainer"></div>
-
-        <div class="form-group">
-            <label for="deliveryOption">Delivery Option</label>
-
-            <select id="deliveryOption">
-                <option value="1">Store Pickup ♡</option>
-                <option value="2">Standard Delivery ♡</option>
-                <option value="3">Express Delivery ♡</option>
-            </select>
-        </div>
-
-        <div id="validationMessage"></div>
-
-        <button
-            type="button"
-            id="calculateBtn"
-            class="calculate-btn"
-        >
-            Calculate Order
-        </button>
-
-        <div id="orderSummary"></div>
-
+    <div class="form-group">
+      <label for="customerName">Customer Name</label>
+      <input
+        type="text"
+        id="customerName"
+        placeholder="Enter your name"
+      >
     </div>
 
-    <script src="script.js"></script>
+    <div class="form-group">
+      <label for="productCount">Number of Products</label>
+      <input
+        type="number"
+        id="productCount"
+        min="1"
+        placeholder="Enter number of products"
+      >
+    </div>
+
+    <div id="productsContainer"></div>
+
+    <div class="form-group">
+      <label for="deliveryOption">Delivery Option</label>
+
+      <select id="deliveryOption">
+        <option value="1">Store Pickup</option>
+        <option value="2">Standard Delivery</option>
+        <option value="3">Express Delivery</option>
+      </select>
+    </div>
+
+    <div id="validationMessage"></div>
+
+    <button id="calculateBtn">
+      Calculate Order
+    </button>
+
+    <div id="orderSummary"></div>
+
+  </div>
+
+  <script src="script.js"></script>
 
 </body>
 </html>
